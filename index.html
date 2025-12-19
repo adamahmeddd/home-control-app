@@ -32,8 +32,9 @@
     <button class="btn-off" onclick="sendCommand('0')">⚫ Turn LEDs OFF</button>
 
     <h3>Door Control</h3>
-    <button class="btn-open" onclick="sendCommand('O')">🚪 Open Door</button>
-    <button class="btn-close" onclick="sendCommand('C')">🔒 Close Door</button>
+    <!-- BUTTONS SWAPPED HERE: Open sends 'C', Close sends 'O' -->
+    <button class="btn-open" onclick="sendCommand('C')">🚪 Open Door</button>
+    <button class="btn-close" onclick="sendCommand('O')">🔒 Close Door</button>
 
     <hr>
 
@@ -46,7 +47,6 @@
     let bluetoothDevice;
     let characteristic;
 
-    // Standard HM-10 UUIDs
     const serviceUUID = "0000ffe0-0000-1000-8000-00805f9b34fb";
     const charUUID = "0000ffe1-0000-1000-8000-00805f9b34fb";
 
@@ -63,7 +63,6 @@
 
             document.getElementById('status').innerText = "✅ Connected to " + bluetoothDevice.name;
             
-            // Handle disconnection
             bluetoothDevice.addEventListener('gattserverdisconnected', () => {
                 document.getElementById('status').innerText = "❌ Disconnected";
             });
@@ -87,7 +86,6 @@
         }
     }
 
-    // Voice Recognition (Chrome Only)
     function startVoice() {
         if (!('webkitSpeechRecognition' in window)) {
             alert("Voice recognition not supported in this browser. Use Chrome.");
@@ -114,14 +112,15 @@
     }
 
     function processVoice(command) {
+        // Voice Logic Swapped as well
         if (command.includes("light on") || command.includes("lights on")) {
             sendCommand('1');
         } else if (command.includes("light off") || command.includes("lights off")) {
             sendCommand('0');
         } else if (command.includes("open door") || command.includes("open the door")) {
-            sendCommand('O');
+            sendCommand('C'); // Sends C to Open
         } else if (command.includes("close door") || command.includes("close the door")) {
-            sendCommand('C');
+            sendCommand('O'); // Sends O to Close
         }
     }
 </script>
